@@ -1,0 +1,35 @@
+{
+  "name": "markdown-coverage-reporter",
+  "version": "1.0.0",
+  "description": "A custom coverage reporter for generating Markdown coverage reports. It is compatible with Vitest and implements the Istanbul.js reporter interface.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drik98/markdown-coverage-reporter.git"
+  },
+  "keywords": [
+    "istanbul",
+    "coverage",
+    "markdown",
+    "reporter",
+    "vitest"
+  ],
+  "author": "drik98",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/drik98/markdown-coverage-reporter/issues"
+  },
+  "homepage": "https://github.com/drik98/markdown-coverage-reporter#readme",
+  "dependencies": {
+    "istanbul-lib-report": "^3.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0"
+  }
+}
