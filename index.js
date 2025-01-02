@@ -278,10 +278,11 @@ class MarkdownReport extends ReportBase {
                 }
             }
         }
-        const line = makeLine(this.nameWidth, this.missingWidth);
-        // this.cw.println(line);
+
+        this.cw.println("# Coverage report");
+        this.cw.println("");
         this.cw.println(tableHeader(this.nameWidth, this.missingWidth));
-        this.cw.println(line);
+        this.cw.println(makeLine(this.nameWidth, this.missingWidth));
     }
 
     onSummary(node, context) {
@@ -306,7 +307,6 @@ class MarkdownReport extends ReportBase {
     }
 
     onEnd() {
-        // this.cw.println(makeLine(this.nameWidth, this.missingWidth));
         this.cw.close();
     }
 }
