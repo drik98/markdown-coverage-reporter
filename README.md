@@ -46,8 +46,8 @@ module.exports = {
 
 Available configuration options are:
 
-| Option    | Type   | Default                  | Description                                                                 |
-|-----------|--------|--------------------------|-----------------------------------------------------------------------------|
-| `file`    | String | `./coverage/coverage.md` | The file path where the Markdown report will be written.                   |
-| `maxCols` | Number | `120`                    | The maximum number of columns before wrapping lines in the Markdown report. |
+| Option    | Type   | Default       | Description                                                                 |
+|-----------|--------|---------------|-----------------------------------------------------------------------------|
+| `file`    | String | `coverage.md` | The file path where the Markdown report will be written.                    |
+| `maxCols` | Number | `120`         | The maximum number of columns before wrapping lines in the Markdown report. |
 

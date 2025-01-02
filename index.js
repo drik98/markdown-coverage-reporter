@@ -246,7 +246,7 @@ class MarkdownReport extends ReportBase {
         opts = opts || {};
         const { maxCols } = opts;
 
-        this.file = opts.file || null;
+        this.file = opts.file || "coverage.md";
         this.maxCols = maxCols != null ? maxCols : process.stdout.columns || 80;
         this.cw = null;
         this.skipEmpty = opts.skipEmpty;
