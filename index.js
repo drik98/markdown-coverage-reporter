@@ -188,15 +188,19 @@ function isFull(metrics) {
     );
 }
 
+function colorizerMarkdown(str, colorClass, shouldColorize) {
+    if (!colorClass || !shouldColorize) return str; // Return uncolored if no class is provided or colorizing is disabled
+    return `<span style="color: ${colorClass};">${str}</span>`;
+}
+
 function tableRow(
     node,
-    context,
-    colorizer,
     maxNameCols,
     level,
     skipEmpty,
     skipFull,
     missingWidth,
+    shouldColorize,
 ) {
     const name = nodeName(node);
     const metrics = node.getCoverageSummary();
@@ -214,27 +218,27 @@ function tableRow(
         functions: isEmpty ? 0 : metrics.functions.pct,
         lines: isEmpty ? 0 : metrics.lines.pct,
     };
-    const colorize = isEmpty
-        ? function (str) {
-            return str;
-        }
-        : function (str, key) {
-            return colorizer(str, context.classForPercent(key, mm[key]));
-        };
-    const elements = [];
 
-    elements.push(formatName(getStatus(mm.statements), STATUS_COL));
-    elements.push(colorize(formatName(name, maxNameCols, level), "statements"));
-    elements.push(colorize(formatPct(mm.statements), "statements"));
-    elements.push(colorize(formatPct(mm.branches, PCT_COLS + 1), "branches"));
-    elements.push(colorize(formatPct(mm.functions), "functions"));
-    elements.push(colorize(formatPct(mm.lines), "lines"));
-    elements.push(
-        colorizer(
+    const getColor = (pct) => {
+        if (pct === 0) return "red";
+        if (pct < 50) return "orange";
+        if (pct < 80) return "yellow";
+        return "green";
+    };
+
+    const elements = [
+        colorizerMarkdown(getStatus(mm.statements), getColor(mm.statements), shouldColorize),
+        formatName(name, maxNameCols, level),
+        colorizerMarkdown(formatPct(mm.statements), getColor(mm.statements), shouldColorize),
+        colorizerMarkdown(formatPct(mm.branches, PCT_COLS + 1), getColor(mm.branches), shouldColorize),
+        colorizerMarkdown(formatPct(mm.functions), getColor(mm.functions), shouldColorize),
+        colorizerMarkdown(formatPct(mm.lines), getColor(mm.lines), shouldColorize),
+        colorizerMarkdown(
             formatName(nodeMissing(node), missingWidth),
-            mm.lines === 100 ? "medium" : "low",
-        ),
-    );
+            mm.lines === 100 ? "gray" : "red",
+            shouldColorize
+        )
+    ];
 
     return elements.join(DELIM) + " ";
 }
@@ -247,6 +251,7 @@ class MarkdownReport extends ReportBase {
         const { maxCols } = opts;
 
         this.file = opts.file || "coverage.md";
+        this.color = opts.color ?? true;
         this.maxCols = maxCols != null ? maxCols : process.stdout.columns || 80;
         this.cw = null;
         this.skipEmpty = opts.skipEmpty;
@@ -285,17 +290,16 @@ class MarkdownReport extends ReportBase {
         this.cw.println(makeLine(this.nameWidth, this.missingWidth));
     }
 
-    onSummary(node, context) {
+    onSummary(node) {
         const nodeDepth = depthFor(node);
         const row = tableRow(
             node,
-            context,
-            this.cw.colorize.bind(this.cw),
             this.nameWidth,
             nodeDepth,
             this.skipEmpty,
             this.skipFull,
             this.missingWidth,
+            this.color,
         );
         if (row) {
             this.cw.println(row);
