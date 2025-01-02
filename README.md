@@ -39,7 +39,7 @@ Example configuration:
 ```js
 module.exports = {
   reporters: [
-    ['markdown-coverage-reporter', [{ file: './coverage/coverage-report.md' }]]
+    ['markdown-coverage-reporter', { file: './coverage/coverage-report.md' }]
   ]
 };
 ```
