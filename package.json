@@ -1,6 +1,6 @@
 {
   "name": "markdown-coverage-reporter",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "A custom coverage reporter for generating Markdown coverage reports. It is compatible with Vitest and implements the Istanbul.js reporter interface.",
   "main": "index.js",
   "scripts": {
